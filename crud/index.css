@@ -2,10 +2,17 @@ body{
     
 }
 
+form{
+    min-width: 1000px;
+    width: auto;
+    text-align:left;
+}
+
 table{
     background-color: bisque;
     border: 1px solid red;
     border-bottom: collapse;
+    width: auto;
 }
 
 #table_header{
@@ -21,4 +28,8 @@ table{
 
 td{
     width: 300px;
+}
+
+.error {
+    color: #FF0000;
 }

@@ -10,10 +10,9 @@
     <body>
         <div id="container">
         <?php
-            //Intento de coneccion a servidor de base de datos.
+        //Conexión a la base de datos por archivo externo.
             
-            $dbc = @mysqli_connect('localhost', 'root', '', 'programahonor')
-                    OR die('No se pudo conectar a MySQL: '.mysqli_connect_error());
+        include_once('conectiondb.php');
             
            $query = "SELECT e.est_id, e.nombre, e.apellido_p, e.apellido_m, e.email, d.nombre departamento, e.promedio
             FROM estudiante e, departamento d
@@ -50,6 +49,8 @@
                 }
                 
                 print"</table></center></div>";
+                
+                print"<a href='insertar_estudiantes_de_honor.php'> Añadir Estudiante </a>";
                 
             }
             else{

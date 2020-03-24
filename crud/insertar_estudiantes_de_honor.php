@@ -17,10 +17,18 @@ presentar formulario
 
 -->
 <!DOCTYPE html>
+
+
+<?php
+    //Conexion a base de datos.
+    include('conectiondb.php');
+?>
 <html>
 <head>
     <meta charset="UTF-8" />
     <title>Insertar Estudiante de Honor</title> 
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
 <h1>Estudiantes de Honor</h1>
@@ -28,9 +36,10 @@ presentar formulario
 <?php
 if (isset($_POST['submit']))
 {
-	$dbc = @mysqli_connect('localhost', 'root', '','programahonor') 
-           OR die('No se pudo conectar a MySQL: '. mysqli_connect_error());
-	
+//	$dbc = @mysqli_connect('localhost', 'root', '','programahonor') 
+//           OR die('No se pudo conectar a MySQL: '. mysqli_connect_error());
+    
+
 	
 	$nombre= $_POST['nombre'];
 	$apellido_p= $_POST['apellido_p'];
@@ -38,12 +47,19 @@ if (isset($_POST['submit']))
 	$email=$_POST['email'];
 	$promedio= $_POST['promedio'];
 	$depto_id= $_POST['depto_id'];
+    
+    $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS);
+    $apellido_p = filter_input(INPUT_POST, 'apellido_p', FILTER_SANITIZE_SPECIAL_CHARS);
+    $apellido_m = filter_input(INPUT_POST, 'apellido_m', FILTER_SANITIZE_SPECIAL_CHARS);
 
+    
+    //Query para insertar estudiante.
 	$query = "INSERT INTO estudiante
 				( apellido_p, apellido_m, nombre, email, promedio, depto_id)
 				VALUES ('".$apellido_p."', '".$apellido_m."', '".$nombre."', '".$email."', ".$promedio.", ".$depto_id.")";
     echo "<p>$query</p>";
 	$r = mysqli_query($dbc,$query);
+	
 	
 	if(mysqli_affected_rows($dbc) == 1)
 	   print '<h3>El estudiante ha sido insertado con éxito.</h3>';
@@ -54,15 +70,22 @@ if (isset($_POST['submit']))
 ?>
 
 <h2>Insertar Estudiante de Honor</h2>
+<p><span class="error">* required field</span></p>
 <form id='form1' name='form1' method='POST' action='insertar_estudiantes_de_honor.php'>
   <table width='349' border='0'>
     <tr>
       <td width="135" align='right'>Nombre</td>
-      <td width="204" align='left'><input name='nombre' type='text' id='nombre' /></td>
+      <td width="204" align='left'>
+      <input name='nombre' type='text' id='nombre' required/>
+       <span class="error">*</span>
+      </td>
     </tr>
     <tr>
       <td align='right'>Apellido Paterno</td>
-      <td align='left'><input name='apellido_p' type='text' id='apellido_p' /></td>
+      <td align='left'>
+      <input name='apellido_p' type='text' id='apellido_p' required/>
+      <span class="error">*</span>
+      </td>
     </tr>
     <tr>
       <td align='right'>Apellido Materno</td>
@@ -71,29 +94,41 @@ if (isset($_POST['submit']))
     <tr>
       <td align='right'>E-mail</td>
       <td align='left'><label for="email"></label>
-      <input type="text" name="email" id="email" /></td>
+      <input type="email" name="email" id="email" required/>
+      <span class="error">*</span>
+      </td>
     </tr>
     <tr>
       <td align='right'>Promedio</td>
-      <td align='left'><input name='promedio' type='text' id='promedio' /></td>
+      <td align='left'>
+      <input type="number" size="6" name="promedio" min="3.50" max="4.00" step="0.01" required/>
+      <span class="error">*</span>
+      </td>
     </tr>
     <tr>
       <td align='right'>Departamento</td>
-      <td align='left'><select name='depto_id' id='lista'>
-    <option value='1'>ESPA</option>
-    <option value='2'>INGL</option>
-    <option value='3'>MATE</option>
-    <option value='4'>CISO</option>
-    <option value='5'>HUMA</option>
-    <option value='6'>TEQU</option>
-    <option value='7'>CCOM</option>
-    <option value='8'>BIOL</option>
-    <option value='9'>COMU</option>
-    <option value='10'>ADEM</option>
-    <option value='11'>ENFE</option>
-    <option value='12'>EDUC</option>
-          <option value='13'>SOFI</option>
-  </select></td>
+      <td align='left'>
+      <select name='depto_id' id='lista' required>
+      <?php
+          
+        //Query para seleccionar departamentos.
+        $query2 = "SELECT * FROM departamento";
+
+        $r2 = mysqli_query($dbc,$query2);
+          
+        echo "<p>$query2</p>";
+    
+        if($r2 = mysqli_query($dbc, $query2)){
+            while($row2=mysqli_fetch_array($r2)){
+                print '<option value='.$row2[depto_id].'>'.$row2[nombre].'</option>';
+            }
+        }
+          
+        ?>
+      
+  </select>
+   <span class="error">*</span>
+   </td>
     </tr>
     <tr>
       <td colspan='2' align='center'><input type='submit' name='submit' id='submit' value='Insertar'/></td>
