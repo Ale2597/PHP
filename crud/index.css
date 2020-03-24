@@ -1,0 +1,24 @@
+body{
+    
+}
+
+table{
+    background-color: bisque;
+    border: 1px solid red;
+    border-bottom: collapse;
+}
+
+#table_header{
+    text-align:center;
+    background-color: aquamarine;
+}
+
+#table_rows{
+    text-align:center;
+    
+    
+}
+
+td{
+    width: 300px;
+}
