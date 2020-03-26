@@ -31,6 +31,7 @@ presentar formulario
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
+<div id="container">
 <h1>Estudiantes de Honor</h1>
 
 <?php
@@ -69,10 +70,11 @@ if (isset($_POST['submit']))
 }
 ?>
 
+<center>
 <h2>Insertar Estudiante de Honor</h2>
-<p><span class="error">* required field</span></p>
+<p><span class="error">* campo requerido</span></p>
 <form id='form1' name='form1' method='POST' action='insertar_estudiantes_de_honor.php'>
-  <table width='349' border='0'>
+  <table id='table2'width='349' border='0'>
     <tr>
       <td width="135" align='right'>Nombre</td>
       <td width="204" align='left'>
@@ -135,6 +137,10 @@ if (isset($_POST['submit']))
       </tr>
   </table>
 </form>
-
-<a href="index.php"> Ver estudiantes </a>
-</body></html>
+<br>
+<button><a href='index.php' id='botton'> Ver Estudiantes </a></button>
+<br>
+</center>
+</div>
+</body>
+</html>
