@@ -1,6 +1,7 @@
 body{
     text-align:center;
-    background-color:antiquewhite;
+/*    background-color:antiquewhite;*/
+    background-color:floralwhite;
 }
 
 #container{
@@ -25,19 +26,16 @@ form{
     min-width: 1000px;
     width: auto;
     align-content: center;
-/*    text-align:left;*/
 }
 
 #table1{
     background-color: azure;
-    border: 1px solid red;
     border-bottom: collapse;
     width: auto;
 }
 
 #table2{
     background-color: azure;
-/*    border: 1px solid red;*/
     border-bottom: collapse;
     width: auto;
     padding: 10px;

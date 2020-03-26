@@ -39,12 +39,10 @@ if($r = mysqli_query($dbc, $query))
     {
         print"<tr id='table_rows'>
             <td>
-            <a href=\"editar_estudiante.php?est_id={$row['est_id']}\"/>
-            <img href='editar.png' height='50' width='50'></a>
+            <a href=\"editar_estudiante.php?est_id={$row['est_id']}\"/>Editar</a>
             </td>
             <td>
-            <a href=\"eliminar_estudiante.php?est_id={$row['est_id']}\"/>
-            <img href='eliminar.png' height='50' width='50'></a>
+            <a href=\"eliminar_estudiante.php?est_id={$row['est_id']}\"/>Borrar</a>
             </td>
             <td>$row[nombre]</td>
             <td>$row[apellido_p]</td>

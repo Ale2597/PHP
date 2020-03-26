@@ -31,17 +31,17 @@
                     
                     <h2>Esta Seguro que desea eliminar al siguiente estudiante de honor?</h2>
                 
-                    <table border="1">
-                        <tr>
+                    <table id="table1">
+                        <tr id="table_header">
                             <td><b>Nombre</b></td>
                             <td><b>Apellido Paterno</b></td>
                             <td><b>Apellido Materno</b></td>
-                            <td><b>e-mail</b></td>
+                            <td><b>E-mail</b></td>
                             <td><b>Departamento</b></td>
                             <td><b>Promedio</b></td>
                         </tr>
 
-                        <tr height=30>
+                        <tr id="table_rows">
                             <td>'.$row['nombre'].'</td>
                             <td>'.$row['apellido_p'].'</td>
                             <td>'.$row['apellido_m'].'</td>
@@ -54,8 +54,7 @@
                     <input type="hidden" name="est_id" value="'.$_GET['est_id'].'">
                     <p>
                     <input type="submit" name="submit" value="Eliminar Estudiante">
-                    </p>
-                    </form>';
+                    </p>';
                 }            
                 
                 else
@@ -82,7 +81,7 @@
         
         ?>
         
-        <a href="index.php">Ver Estudiantes</a>
+        <button><a href='index.php' id='botton'> Ver Estudiantes </a></button>
         
         </div>
     </body>
