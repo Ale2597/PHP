@@ -37,10 +37,6 @@ presentar formulario
 <?php
 if (isset($_POST['submit']))
 {
-//	$dbc = @mysqli_connect('localhost', 'root', '','programahonor') 
-//           OR die('No se pudo conectar a MySQL: '. mysqli_connect_error());
-    
-
 	
 	$nombre= $_POST['nombre'];
 	$apellido_p= $_POST['apellido_p'];

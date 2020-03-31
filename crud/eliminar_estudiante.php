@@ -11,9 +11,9 @@
         <div id="container">
         <?php
             
-            $dbc = @mysqli_connect('localhost', 'root', '', 'programahonor')
-                    OR die('No se pudo conectar a MySQL: '.mysqli_connect_error());
-            
+        //Conexión a la base de datos por archivo externo.
+
+        include_once('conectiondb.php');
        
             if(isset($_GET['est_id']) && is_numeric($_GET['est_id']))
             {
