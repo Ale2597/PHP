@@ -42,11 +42,11 @@ cerrar php
 
 <body>
 <?php
-
+    
 if(isset($_GET['est_id']) && is_numeric($_GET['est_id']))
 {
-   $query = "SELECT nombre, apellido_p, apellido_m, email, depto_id, promedio
-			FROM estudiante
+   $query = "SELECT e.est_id, e.nombre, e.apellido_p, e.apellido_m, e.email, e.depto_id, e.promedio
+			FROM estudiante e
 			WHERE est_id={$_GET['est_id']}";
     
    
@@ -105,21 +105,23 @@ if(isset($_GET['est_id']) && is_numeric($_GET['est_id']))
        <?php
           
         //Query para seleccionar departamentos.
-        $query2 = "SELECT * FROM departamento";
+        $query2 = "SELECT d.depto_id, d.nombre
+                    FROM departamento d";
 
         $r2 = mysqli_query($dbc,$query2);
     
-        if($r2 = mysqli_query($dbc, $query2)){
-            while($row2=mysqli_fetch_array($r2)){
-                print "
-                <option value='.$row2[depto_id].'>'.$row2[nombre].'"; ?>
-                <?php if ($row['depto_id']==$row2['depto_id']) echo "selected" ; ?>
-                <?php print "</option>";
+        if($r2 = mysqli_query($dbc, $query2))
+        {
+            while($row2=mysqli_fetch_array($r2))
+            {
+                print "<option value='$row2[depto_id]'";
+                if ($row['depto_id']==$row2['depto_id']) echo "selected";
+                
+                print ">$row2[nombre]</option>";
             }
         }
-       
-       
-          
+       ?>
+       <?php
        print '
       </select>
        <span class="error">*</span>
