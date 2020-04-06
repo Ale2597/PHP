@@ -1,72 +1,109 @@
 <!DOCTYPE html>
 <html>
-    
 <head>
-    <meta charset="utf-8">
-    <title>Programa de Honor UPRA</title>
+    <meta charset="big5" />
+    <title>LOGIN - Estudiantes de  Honor UPRA</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
+
 <body>
-<div id="container">
-<?php
-//Conexión a la base de datos por archivo externo.
 
+
+    <h2>Programa de Honor </h2>
+<!--    File de Login que ahora es el index para que el usuario tenga que hacer login antes de entrar a la pagina como tal.
 include_once('conectiondb.php');
+include_once('localhostdb.php');-->
 
-$query = "SELECT e.est_id, e.nombre, e.apellido_p, e.apellido_m, e.email, d.nombre departamento, e.promedio
-FROM estudiante e, departamento d
-WHERE e.depto_id = d.depto_id
-ORDER BY promedio DESC";
-
-if($r = mysqli_query($dbc, $query))
+<?php
+if($_SERVER['REQUEST_METHOD'] == 'POST') 
 {
-    print"<div><center><table id='table1'>";
-    print"<h2>Estudiantes de Honor</h2>";
-    print"<h3>Plataforma para ver y eliminar estudiantes de honor (GPA > 3.5)</h3>";
-    print"<tr id='table_header'>
-            <td><b>Editar</b></td>
-            <td><b>Borrar</b></td>
-            <td><b>Nombre</b></td>
-            <td><b>Apellido Paterno</b></td>
-            <td><b>Apellido Materno</b></td>
-            <td><b>E-mail</b></td>
-            <td><b>Departamento</b></td>
-            <td><b>Promedio</b></td>
-            </tr>";
+		if( (!empty($_POST['email'])) && (!empty($_POST['password'])) ) 
+		{ //conectarme a ver si existe usuario    
+			if(include_once('localhostdb.php')) // Conectarse al servidor SQL
+	   		{
+					$email = $_POST['email'];
+					$password = $_POST['password'];
+		   
+			  		echo  "Email y Password entrados: ".$email." ".$password;
+			  		$query = "SELECT * FROM usuarios WHERE email = '$email'  AND password = '$password'";
+			 		$r = mysqli_query($dbc, $query);
+			 		if ($row = mysqli_fetch_array($r))
+                    {
+                        if ( (strtolower($_POST['email']) == $row['email']) && ($_POST['password'] ==$row['password'] ) )
+                        { // El usuario existe en la tabla... escoger a dónde va por su categoría
+                            echo "Info de la tabla usuarios";
+                            echo $row['email'];
+                            echo $row['password'];
+                            echo $row['rol'];
+                            if ($row['rol']== "admin")
 
-    while($row=mysqli_fetch_array($r))
-    {
-        print"<tr id='table_rows'>
-            <td>
-            <a href=\"editar_estudiante.php?est_id={$row['est_id']}\"/>Editar</a>
-            </td>
-            <td>
-            <a href=\"eliminar_estudiante.php?est_id={$row['est_id']}\"/>Borrar</a>
-            </td>
-            <td>$row[nombre]</td>
-            <td>$row[apellido_p]</td>
-            <td>$row[apellido_m]</td>
-            <td>$row[email]</td>
-            <td>$row[departamento]</td>
-            <td>$row[promedio]</td>
-            </tr>";
-    }
+                                  header('Location: admin/index.php');
+                            else
+                                  header('Location: user/index.php');
+                            exit();
 
-    print"</table></center></div><br>";
-    
-    print"<button><a href='insertar_estudiantes_de_honor.php' id='botton'>Añadir Estudiante</a></button>";
-    
 
+                        } 
+                    }
+					else 
+					{ // Usuario no existe en la tabla
+					
+					  	print '<p>El email y/o password entrados no concuerdan con nuestros archivos!<br />Vuelva a intentarlo.<a href="index.php"> Login </a></p>';
+					  
+					}
+			}
+			else
+				print'<p> No se pudo conectar a servidor MYSQL</p>';
+		
+        }
+        else
+        {
+            // No entró uno de los campos
+
+            print '<p>Asegúrese de entrar su username y password. Vuelva a intentarlo...<br /><a href="index.php"> Login </a></p>';
+
+
+
+        }
+} 
+else // No llegó por un submit, por lo tanto hay que presentar el formulario
+{  
+			
+			  print '<div id="container"><center>
+              <form action="index.php" method="post">
+              <table id="table3">
+              <tr>
+			     <td colspan="2" align="center"><h3> LOGIN </h3></td
+              </tr>
+			  <tr>
+                <td align="right">Email: </td>
+                <td 
+                align="left"><input type="email" name="email" size="20" required/>
+                <span class="error">*</span>
+                </td>
+              </tr>
+              <tr>
+			     <td align="right">Password: </td>
+                <td 
+                align="left"><input type="password" name="password" size="20" required/>
+                <span class="error">*</span>
+                </td>
+              </tr>
+              <tr>
+			     <td colspan="2" align="center"><input type="submit" name="submit" value="Login" /></td>
+              </tr>
+              <tr>
+			     <td colspan="2" align="right"><a href="register.php"> Sin Cuenta? Regístrate Ahora! </a></td>
+              </tr>
+			  </table>
+              </form></center></div>';
+			  
 }
-else{
-    print '<p style="color:red;">No se puede mostrar récords de la base de datos porque: 
-    <br/>'.mysqli_error($dbc).'.</p>';
-
-    mysqli_close($dbc);
-    }
-
+			
+			
 ?>
-</div>
+			
+
 </body>
 </html>

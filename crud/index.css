@@ -9,6 +9,7 @@ body{
     padding: 10px;
     height: auto;
     width: auto;
+    align-content: center;
 }
 
 button{
@@ -39,6 +40,15 @@ form{
     border-bottom: collapse;
     width: auto;
     padding: 10px;
+}
+
+
+#table3{
+    background-color: azure;
+    border-bottom: collapse;
+    width: auto;
+    padding: 10px;
+    
 }
 
 #table2 td{
