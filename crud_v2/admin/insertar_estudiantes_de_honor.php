@@ -17,12 +17,13 @@ presentar formulario
 
 -->
 <!DOCTYPE html>
-
-
 <?php
     //Conexion a base de datos.
     include('../conectiondb.php');
 //    include('../localhostdb.php');
+
+//Empezar session.
+session_start();
 ?>
 <html>
 <head>
@@ -33,9 +34,14 @@ presentar formulario
 </head>
 <body>
 <div id="container">
-<h1>Estudiantes de Honor</h1>
-
 <?php
+    
+print '<div id="window">
+            <div id="profile">
+                <h3> Bienvenido admin  '. $_SESSION['nombre_admin'].'! </h3>
+            </div>
+       </div>';
+    
 if (isset($_POST['submit']))
 {
 	

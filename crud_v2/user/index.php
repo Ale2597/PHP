@@ -1,6 +1,15 @@
 <!DOCTYPE html>
-<html>
-    
+<?php 
+//Conexión a la base de datos por archivo externo.
+
+include('../conectiondb.php');
+//include('../localhostdb.php');
+
+//Empezar session.
+session_start();
+
+?>
+<html> 
 <head>
     <meta charset="utf-8">
     <title>Programa de Honor UPRA</title>
@@ -10,10 +19,12 @@
 <body>
 <div id="container">
 <?php
-//Conexión a la base de datos por archivo externo.
-
-include_once('../conectiondb.php');
-//include_once('../localhostdb.php');
+ 
+print '<div id="window">
+            <div id="profile">
+                <h3> Bienvenido usuario  '. $_SESSION['nombre_user'].'! </h3>
+            </div>
+       </div>';
 
 $query = "SELECT e.est_id, e.nombre, e.apellido1, e.apellido2, e.email, d.nombre departamento, e.promedio
 FROM estudiante2 e, departamento d
@@ -49,8 +60,9 @@ if($r = mysqli_query($dbc, $query))
     print"</table></center></div><br>";
     
 //    echo "User ID: ". $_GET['user']; Prueba papa pasar el ID del usuario para cambio de perfil.
-    print"<button><a href='editar_usuario.php?user_id=14' id='botton'>Editar Info Usuario</a></button>";
-    
+//    $user_id = $_SESSION['user_id'];
+//    ?id={$_SESSION['user_id']}
+    print"<button><a href=\"editar_usuario.php?user_id={$_SESSION['user_id']}\" id='botton'>Editar Info Usuario</a></button>";
 }
 else{
     print '<p style="color:red;">No se puede mostrar récords de la base de datos porque: 

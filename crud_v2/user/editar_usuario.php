@@ -30,8 +30,11 @@ cerrar php
 <!DOCTYPE html>
 <?php
     //Conexion a base de datos.
-//    include('../conectiondb.php');
-    include('../localhostdb.php');
+    include('../conectiondb.php');
+//    include('../localhostdb.php');
+
+//Empezar Sesion.
+session_start();
 ?>
 <html>
 <head>
@@ -42,7 +45,14 @@ cerrar php
 </head>
 
 <body>
+<div id="container">
 <?php
+    
+print '<div id="window">
+            <div id="profile">
+                <h3> Bienvenido usuario  '. $_SESSION['nombre_user'].'! </h3>
+            </div>
+       </div>';
     
 if(isset($_GET['user_id']) && is_numeric($_GET['user_id']))
 {
@@ -94,7 +104,7 @@ if(isset($_GET['user_id']) && is_numeric($_GET['user_id']))
    </div>';
    }
    else
-      print '<h3 style="color:red;">No se puede mostrar la información del estudiante ya que ocurrió el error:<br />' . mysqli_error($dbc) . '</h3>';
+      print '<h3 style="color:red;">No se puede mostrar la información del usuario ya que ocurrió el error:<br />' . mysqli_error($dbc) . '</h3>';
 	         
 }
 else if(isset($_POST['user_id']) && is_numeric($_POST['user_id']))
@@ -111,10 +121,13 @@ else if(isset($_POST['user_id']) && is_numeric($_POST['user_id']))
 	        print '<h3 style="color:red;">No se pudo actualizar la información del usuario ya que ocurrió el error:<br />' . mysqli_error($dbc). '</h3>';
 }
 else
-   print '<h3 style="color:red;">Esta página ha sido accedida por error</h3>';	  	
+{
+   print '<h3 style="color:red;">Esta página ha sido accedida por error!</h3>';
+}
 
 mysqli_close($dbc);
 ?>
-<a href="index.php"> Ver Estudiantes </a>
+<button><a href="index.php" id='botton'> Ver Estudiantes </a></button>
+</div>
 </body>
 </html>

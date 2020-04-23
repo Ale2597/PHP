@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<?php 
+//Empezar Sesion.
+session_start();
+
+?>
 <html>
 <head>
     <meta charset="big5" />
@@ -12,7 +17,7 @@
 include_once('conectiondb.php');
 include_once('localhostdb.php');-->
 
-    <h2>Programa de Honor </h2>
+<h2>Programa de Honor </h2>
 
 <?php
 if($_SERVER['REQUEST_METHOD'] == 'POST') 
@@ -59,12 +64,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                                     $telefono = $_POST['telefono'];
 
                                     $telefono = filter_input(INPUT_POST, 'telefono', FILTER_SANITIZE_SPECIAL_CHARS);
+                                    
+                                    $status = 'activo';
 
 
                                     //Query para insertar usuario.
                                     $query3 = "INSERT INTO usuarios2
-                                                (email, pass, telefono)
-                                                VALUES ('".$email."', '".$password."', '".$telefono."')";
+                                                (email, pass, telefono, status)
+                                                VALUES ('".$email."', '".$password."', '".$telefono."', '".$status."')";
 
                                     echo "<h3>$query3</h3>";
                                     
@@ -75,19 +82,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                                     {
                                        print '<h3>El usuario ha sido insertado con éxito.</h3>';
                                         
-//                                        $query4 = "SELECT * FROM usuarios2 WHERE email = '$email'                                                         AND pass = '$password'";
-//                                        $r4 = mysqli_query($dbc, $query4);
-//            
-//                                        if ($row4 = mysqli_fetch_array($r4))
-//                                            $user_id = $row4['user_id'];
+                                        $query4 = "SELECT * FROM usuarios2 WHERE email = '$email'                                                         AND pass = '$password'";
+                                        $r4 = mysqli_query($dbc, $query4);
+            
+                                        if ($row4 = mysqli_fetch_array($r4))
+                                            $_SESSION['user_id'] = $row4['user_id'];
                                     }
                                     else
                                        print '<h3 style="color:red;">No se pudo insertar al usuario porque:<br />' . mysqli_error($dbc) . '</h3>';   
                                     mysqli_close($dbc);
 
                                     header('Location: user/index.php');
-//                                    header('Location: user/index.php?user=$user_id');
-                                    
                                     
                                 }
                             }

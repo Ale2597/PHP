@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<?php 
+//Empezar Sesion.
+session_start();
+
+?>
 <html>
 <head>
     <meta charset="big5" />
@@ -25,28 +30,39 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 $email = $_POST['email'];
                 $password = $_POST['password'];
 
-                echo "<br><h3>Email: $email</h3>";
-                echo "<h3>Password: $password</h3><br>";
+//                echo "<br><h3>Email: $email</h3>";
+//                echo "<h3>Password: $password</h3><br>";
                 $query = "SELECT * FROM usuarios2 WHERE email = '$email'  AND pass = '$password'";
                 $r = mysqli_query($dbc, $query);
                 
                 $query2 = "SELECT * FROM admins WHERE email = '$email'  AND pass = '$password'";
                 $r2 = mysqli_query($dbc, $query2);
                 
+                $query3 = "SELECT nombre FROM estudiante2 WHERE email = '$email'";
+                $r3 = mysqli_query($dbc, $query3);
+                $row3 = mysqli_fetch_array($r3);
+                
                 if ($row = mysqli_fetch_array($r))
                 {
-                    if ( (strtolower($_POST['email']) == $row['email']) && ($_POST['password'] ==$row['pass'] ) )
-                    { // El usuario existe en la tabla... escoger a dónde va por su categoría
+                    if ( (strtolower($_POST['email']) == $row['email']) && ($_POST['password'] ==$row['pass']) && ($row['status'] == 'activo') )
+                    { // El usuario existe en la tabla de usuarios2.
       
+                        $_SESSION['user_id'] = $row['user_id'];
+                        $_SESSION['nombre_user'] = $row3['nombre'];
                         header('Location: user/index.php');
                         exit();
-                    } 
+                    }
+                    else{
+                        print '<h3>Su cuenta aparenta estar inactiva! Por favor contacte un administrador para restaurar el acceso a su cuenta.<br><br><a href="index.php"> Login </a></h3>';
+                    }
                 }
                 else if($row2 = mysqli_fetch_array($r2))
                 {
-                    if ( (strtolower($_POST['email']) == $row2['email']) && ($_POST['password'] ==$row2['pass'] ) )
+                    if ( (strtolower($_POST['email']) == $row2['email']) && ($_POST['password'] ==$row2['pass']) && ($row2['status'] == 'activo') )
                     {//El usuario es admin.
                         
+                        $_SESSION['nombre_admin'] = $row2['nombre'];
+                        $_SESSION['admin_id'] = $row2['admin_id'];
                         header('Location: admin/index.php');
                         exit();
                     }
