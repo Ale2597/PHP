@@ -91,36 +91,39 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 else // No llegó por un submit, por lo tanto hay que presentar el formulario
 {  
 			
-			  print '<div id="container"><center>
-              <form action="index.php" method="post">
-              <table id="table3">
-              <tr>
-			     <td colspan="2" align="center"><h3> LOGIN </h3></td
-              </tr>
-			  <tr>
-                <td align="right">Email: </td>
-                <td align="left">
-                <input type="email" name="email" size="20" required/>
-                <span class="error">*</span>
-                </td>
-              </tr>
-              <tr>
-			     <td align="right">Password: </td>
-                <td align="left">
-                <input type="password" name="password" size="20" required/>
-                <span class="error">*</span>
-                </td>
-              </tr>
-              <tr>
-			     <td colspan="2" align="center">
-                 <input type="submit" name="submit" value="Login" /></td>
-              </tr>
-              <tr>
-			     <td colspan="2" align="right">
-                 <a href="register.php"> Sin Cuenta? Regístrate Ahora! </a></td>
-              </tr>
-			  </table>
-              </form></center></div>';
+    print '<div id="container"><center>
+    <form action="index.php" method="post">
+    <table id="table3">
+    <tr>
+     <td colspan="2" align="center"><h3> LOGIN </h3></td
+    </tr>
+    <tr>
+    <td align="right">Email: </td>
+    <td align="left">
+    <input type="email" name="email" size="20" required/>
+    <span class="error">*</span>
+    </td>
+    </tr>
+    <tr>
+     <td align="right">Password: </td>
+    <td align="left">
+    <input type="password" name="password" size="20" required/>
+    <span class="error">*</span>
+    </td>
+    </tr>
+    <tr>
+     <td colspan="2" align="center">
+     <input type="submit" name="submit" value="Login" /></td>
+    </tr>
+    <tr>
+     <td colspan="1" align="left">
+     <a href="estudiantes.php"> No soy estudiante! </a></td>
+
+     <td colspan="1" align="right">
+     <a href="register.php"> Estudiante? Regístrate! </a></td>
+    </tr>
+    </table>
+    </form></center></div>';
 			  
 }
 			

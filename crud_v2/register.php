@@ -20,6 +20,7 @@ include_once('localhostdb.php');-->
 <h2>Programa de Honor </h2>
 
 <?php
+    
 if($_SERVER['REQUEST_METHOD'] == 'POST') 
 {
     if( (!empty($_POST['email'])) && (!empty($_POST['password'])) ) 
@@ -28,9 +29,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $email = $_POST['email'];
             $password = $_POST['password'];
+            $con_pass = $_POST['con_pass'];
 
-            echo "<br><h3>Email: $email</h3>";
-            echo "<h3>Password: $password</h3><br>";
+//            echo "<br><h3>Email: $email</h3>";
+//            echo "<h3>Password: $password</h3><br>";
             
             $query = "SELECT * FROM usuarios2 WHERE email = '$email'  AND pass = '$password'";
             $r = mysqli_query($dbc, $query);
@@ -57,8 +59,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                         if ($row2 = mysqli_fetch_array($r2))
                             {
 
-                                if ( (strtolower($_POST['email']) == $row2['email']))
-                                {//Usuario es estudiante (Existe en la tabla estudiante2) Hacer query de insert.
+                                if ( (strtolower($_POST['email']) == $row2['email']) && ($password == $con_pass))
+                                {//Usuario es estudiante (Existe en la tabla estudiante2) 
+                                    //Passwords entrados concuerdan.
+                                    //Hacer query de insert.
                         
 
                                     $telefono = $_POST['telefono'];
@@ -86,19 +90,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                                         $r4 = mysqli_query($dbc, $query4);
             
                                         if ($row4 = mysqli_fetch_array($r4))
+                                        {
                                             $_SESSION['user_id'] = $row4['user_id'];
+                                            $_SESSION['nombre_user'] = $row2['nombre'];
+                                            header('Location: user/index.php');
+                                        }
                                     }
                                     else
                                        print '<h3 style="color:red;">No se pudo insertar al usuario porque:<br />' . mysqli_error($dbc) . '</h3>';   
                                     mysqli_close($dbc);
-
-                                    header('Location: user/index.php');
                                     
+                                }//Passwords no concuerda!!!
+                                else
+                                {
+//                                    print '<h3>Passwords no concuerda!!!</h3>';
+                                    $err_message = 'Passwords no concuerdan!';
+                                    $_SESSION['err_mess'] = $err_message;
+                                    $_SESSION['email'] = $email;
+                                    $_SESSION['tel'] = $telefono;
+                                    
+                                    header('Location: register.php');
                                 }
                             }
                             else//VISITANTE
                             {//Usuario no es estudiante (NO existe en tabla estudiante2)
                                 print '<h3>Solo estudiantes pueden registrarse!</h3>';
+                                print '<h3>Si es estudiante, asegúrese entrar su email correctamente. Vuelva a intentarlo...<br /><a href="register.php"> Registrar </a></h3>';
                                 print '<h3>Para ver los estudiantes de honor como visitante oprima
                                 <a href="estudiantes.php">Aquí</a></h3>';
                             }
@@ -121,6 +138,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 } 
 else // No llegó por un submit, por lo tanto hay que presentar el formulario
 {  
+ 
+if(empty($_SESSION['email']))
+{
+    $_SESSION['email'] = "";
+    $_SESSION['tel'] = ""; 
+    $_SESSION['err_mess'] = "";
+}
 			
 print '<div id="container"><center>
 <h2> Registración </h2>
@@ -131,7 +155,7 @@ print '<div id="container"><center>
     <tr>
       <td align="right">E-mail: </td>
       <td align="left"><label for="email"></label>
-      <input type="email" name="email" id="email" required/>
+      <input type="email" name="email" id="email" value="'.$_SESSION['email'].'" required/>
       <span class="error">*</span>
       </td>
     </tr>
@@ -145,9 +169,18 @@ print '<div id="container"><center>
     </tr>
     
     <tr>
+    <span class="error">'.$_SESSION['err_mess'].'</span>
+      <td align="right">Confirm Password: </td>
+      <td align="left"><label for="con_pass"></label>
+      <input type="password" name="con_pass" id="con_pass" required/>
+      <span class="error">*</span>
+      </td>
+    </tr>
+    
+    <tr>
       <td align="right">Telefono: </td>
       <td align="left"><label for="telefono"></label>
-      <input type="tel" name="telefono" id="telefono" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"/>
+      <input type="tel" name="telefono" id="telefono" value="'.$_SESSION['tel'].'"/>
       </td>
     </tr>
       
@@ -156,11 +189,14 @@ print '<div id="container"><center>
       </tr>
   </table>
 </form>
+<br>
+<button><a href="index.php" id="botton"> Regresar </a></button>
+
 </center></div>';
 			  
 }
 			
-			
+//pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"		
 ?>
 			
 

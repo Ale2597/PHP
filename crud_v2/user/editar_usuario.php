@@ -71,7 +71,7 @@ if(isset($_GET['user_id']) && is_numeric($_GET['user_id']))
         
         <tr>
           <td align="right"><label for="email">Email: </label></td>
-          <td align="left"><label for="email"></label>'.$row['email'].'"
+          <td align="left"><label for="email"></label>'.$row['email'].'
           <span class="error">*</span>
           </td>
         </tr>
